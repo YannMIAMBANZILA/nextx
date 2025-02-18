@@ -1,14 +1,14 @@
 // notre fonction qui va nous connecter à MongoDB
 const connect = async () => {
     // D'abord, on vérifie si on est déjà connecté
-    if (mongoose.connections[0].readyState) {
+    if (mongoose.connection[0].readyState) {
     console.log("Déjà connecté à MongoDB");
     return;
     }
     try {
     // Tentative de connexion avec les variables d'environnement
     await mongoose.connect(process.env.MONGO_URI, {
-    dbName: 'Blog', // On dit à MongoDB qu'on veut utiliser notre base 'Blog'
+    dbName: 'db_tp_nextjs', // On dit à MongoDB qu'on veut utiliser notre base 'db_tp_nextjs'
     useNewUrlParser: true,
     // Cette option permet d'utiliser le nouveau système d'analyse
     // d'URL de MongoDB. C'est recommandé car l'ancien analyseur est déprécié.
@@ -56,3 +56,4 @@ const connect = async () => {
  throw e;
  }
 }
+

@@ -1,4 +1,4 @@
-import { connect } from '../../../libs/mongodb';
+import  connectDB  from '../../../libs/mongodb';
 import User from '../../../models/user.models';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 // GET - Récupérer tous les utilisateurs
 export async function GET() {
     try {
-        await connect();
+        await connectDB();
         const users = await User.find().select('-password'); // Exclure le mot de passe
         return NextResponse.json({ users }, { status: 200 });
     } catch (error) {
@@ -16,8 +16,11 @@ export async function GET() {
 // POST - Créer un nouvel utilisateur
 export async function POST(request) {
     try {
-        await connect();
+        await connectDB();
         const { username, email, password } = await request.json();
+       
+console.log("Request Body:", body);
+
 
         // Vérification des champs requis
         if (!username || !email || !password) {
@@ -66,7 +69,7 @@ return NextResponse.json({ error: error.message }, { status: 500 });
 // PUT - Mettre à jour un utilisateur
 export async function PUT(request) {
     try {
-        await connect();
+        await connectDB();
         const { id, ...updateData } = await request.json();
 
         // Si le mot de passe est mis à jour, le hasher
@@ -96,7 +99,7 @@ export async function PUT(request) {
 // DELETE - Supprimer un utilisateur
 export async function DELETE(request) {
     try {
-        await connect();
+        await connectDB();
         const { id } = await request.json();
 
         const deletedUser = await User.findByIdAndDelete(id);
